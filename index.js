@@ -36,13 +36,6 @@ nylas.messages.search(["from:flipkart.com"]).then(messages => {
 // });
 
 
-
-// nylas.threads.list({unread: true, limit: 200}).then(threads =>{
-//     for (let thread of threads) {
-//         console.log(thread.subject);
-//     }
-// });  
-
 const labelName = 'Ecom-recepits';
 let labelToUpdate;
 
@@ -70,6 +63,26 @@ function createAndApplyLabel () {
         addLabelToMostRecentMessage(labelToUpdate);
     }
 }
+function addLabelToMostRecentMessage (label) {
+    nylas.messages.search(["from:flipkart.com"]).then(msg => {
+        for (let msgs of msg){
+      console.log(`${label.displayName} applied to the most recent email.`)
+      // Add the label to the most recent email and save it.
+      msgs.labels.push(label);
+        
+
+      msgs.save().then(savedMsg => {
+        console.log(`Subject: ${savedMsg.subject}`);
+        //Gmail includes a number of default labels,
+        // including Inbox, Important, Trash, Spam, and more
+        console.log("This email contains the following labels")
+        console.log(savedMsg.labels);
+      })
+    }
+    })
+}
+
+
 
 
  
